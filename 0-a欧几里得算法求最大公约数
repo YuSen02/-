@@ -1,0 +1,17 @@
+欧几里得算法指明：a,b最大公约数，就等于b,a%b的最大公约数，
+故而，求 a,b 公约数问题就等价于求 b, r 公约数问题， 进而求 a,b 最大公约数问题就等价于求 b, r 最大公约数问题。
+#include<stdio.h>
+int gcd(int a,int b)          /*输入的ab中有0
+{
+	return b ? gcd(b,a%b) : a;
+	
+}                                            */
+int main()
+{
+	int a,b;
+	while(scanf("%d%d",&a,&b)!=EOF)
+	      printf("%d\n",a>b?gcd(a,b):gcd(b,a));
+	return 0;
+}
+遇到的问题：1.gcd的理解使用:用这个名字做辗转相除法的函数名.
+           2.EOF的意义:如果a和b都被成功读入，那么scanf的返回值就是2如果只有a被成功读入，返回值为1 如果a和b都未被成功读入，返回值为0 如果遇到错误或遇到end of file.
