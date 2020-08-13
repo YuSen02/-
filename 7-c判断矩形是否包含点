@@ -1,0 +1,10 @@
+#include <stdio.h>
+void main()
+{
+int a,b,c,d,m,n,t;
+scanf("%d%d",&m,&n);
+scanf("%d%d%d%d",&a,&b,&c,&d);
+if(a>c) {t=a;a=c;c=t;}
+if(b>d) {t=b;b=d;d=t;}
+(m>=a&&m<=c&&n>=b&&n<=d)?printf("YES"):printf("NO");
+}
