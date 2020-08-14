@@ -1,0 +1,19 @@
+简介：斐波那契数列（Fibonacci Sequence），又称黄金分割数列，指的是这样一个数列：1、1、2、3、5、8、13、21、……。在数学上，斐波纳契数列以递推的方法定义为：F(1)=1，F(2)=1，F(n)=F(n-1)+F(n-2)（n≥2，n∈N）。
+题目：递归计算斐波那契数列第n项的值。
+＃include<stdio.h>
+int fun(int n);
+int main()
+{
+int x,y,n;
+printf("请输入第n项的项数：")；
+scanf("%d",&n);
+printf("%d,fun(n)");
+return 0;
+}
+int fun(int n)
+{
+if(n==1||n==2)
+return 1;
+else
+return fun(n-1)+fun(n-2);
+}
