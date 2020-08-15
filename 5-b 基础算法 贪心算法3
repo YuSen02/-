@@ -1,0 +1,52 @@
+问题描述：分别有1,5,10,50,100元，分别有5,2,2,3,5张纸币。问若要支付k元，则需要多少张纸币？
+
+问题分析：
+
+我们只需要遵循“优先使用面值大的硬币”即可。
+
+1.尽可能多的使用100元（即最大的）；
+
+2.余下部分尽可能多的使用50元；
+
+3.余下部分尽可能多的使用10元；
+
+4.余下部分尽可能多的使用5元；
+
+5.余下部分使用1元；
+
+代码如下：
+
+#include <iostream>
+#include <algorithm>
+using namespace std;
+ 
+const int N=5;   
+int Money[N]={5,2,2,3,5};  
+int Value[N]={1,5,10,50,100};  
+ 
+int solve(int money){
+	int num=0;
+	for(int i=N-1;i>0;i--){
+		//c为使用纸币的张数，在需要用面值为vaule[i]的张数和已有张数里选取最小的；
+		int c=min(money/Value[i],Money[i]);
+		money=money-Value[i]*c;		
+		num+=c;
+	}
+	if(money>0){
+		num=-1;		
+	}
+	return num;
+}
+int main(){
+	int money;
+	cin>>money;//输入一共需要支付多少钱
+	int res=solve(money);
+	if(res!=-1){
+		cout<<res<<endl;
+	}else{
+		cout<<"no"<<endl;
+	}
+	return 0;
+ 
+}
+ 
