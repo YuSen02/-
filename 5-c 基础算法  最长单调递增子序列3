@@ -1,0 +1,61 @@
+题目描述
+给出一个由n个数组成的序列x[1…n]，找出它的最长单调上升子序列。
+即求最大的m和a1,a2……,am，使得a1<a2<……<am且x[a1]<x[a2]<……<x[am]
+
+解题思路
+动态规划的状态表示描述为：
+m[i]，1≤i≤n，表示以x[i]结尾的最长上升子序列的长度，则问题的解为 max{m[i],1≤i≤n }
+假设当前已求出m[1…i-1]，当前保留的状态集合为S，下面计算m[i]。
+1.若存在状态k∈S，使得x[k]=x[i]，则状态m[i]必定不需保留，不必计算。
+因为，不妨设m[i]=m[j]+1，则x[j]<x[i]=x[k]，j∈S，j≠k，所以m[j]<m[k]，则m[i]=m[j]+1≤m[k]，所以状态m[i]不需保留。
+2.否则，m[i]=1+max{m[j]| x[j]<x[i], j∈S}。我们注意到满足条件的j也满足x[j]=max{x[k]|x[k]<x[i], k∈S}。同时我们把状态i加入到S中。
+3.若2成立，则我们往S中增加了一个状态，为了保持S的性质，我们要对S进行维护，
+若存在状态k∈S，使得m[i]=m[k]，则我们有x[i]<x[k]，且x[k]=min{x[j]|x[j]>x[i], j∈S}。于是状态k应从S中删去。
+
+具体代码实现
+
+#include<stdio.h>
+#include<stdlib.h>
+
+//在非递减序列 arr[start..end]（闭区间）上二分查找第一个大于key的位置，如果都小于key，就返回end+1
+int binary_search(int arr[], int start, int end, int key){
+    int mid;
+    if (arr[end]<=key)
+        return end+1;
+        
+    while(start<end){
+        mid=(start+end)/2;
+        if (arr[mid]<=key)  //key在mid右边 ,若取大于等于key的位置则为>。 
+            start=mid+1;
+        else
+            end=mid;		//key在mid左边 
+    }
+    return start;
+}
+
+int LIS(int a[], int n){						  //最长递增子序列(Longest Increasing Subsequence) 
+	int len=1;
+	int *end=(int *)malloc(sizeof(int)*(n+1));    //存储的对应长度LIS的最小末尾的数组 
+    end[1]=a[0]; 								  //初始化：长度为1的LIS末尾为d[0]
+    for (int i=1;i<n;i++){
+        int pos=binary_search(end,1,len,a[i]); //找到插入位置
+        end[pos]=a[i];
+        if(len<pos) 							  //按需要更新LIS长度
+            len=pos;
+    }
+    return len;
+}
+
+int main(){
+	int n;
+	printf("请输入序列长度(n)：");
+	scanf("%d",&n);
+	
+	int *a=(int *)malloc(sizeof(int)*n);
+	printf("\n请输入序列：");
+	for(int i=0;i<n;i++){
+		scanf("%d",&a[i]);
+	}
+	printf("\nLIS: %d",LIS(a,n));
+	return 0;
+}
