@@ -1,0 +1,51 @@
+问题描述：
+
+给定一个序列，找出其最长递增子序列长度。
+
+比如 输入 1 3 7 5
+
+输出 3
+
+算法解决思路：
+
+利用动态规划的思想，以序列的每个点最为最右端，找出每个点作为最右端时的子序列长度的最大值，即问题的求解。因此，在计算前面的每个点的时候，将其结果保存下来，后面的点与前面的点的数值进行比较，如果大，则在其长度基础上加1，并且找出所有可能情况下最长的保存为当前点的长度。形成递归。
+
+具体实现代码如下：
+
+#include "stdio.h"
+#include "stdlib.h"
+#define MAXDATA 10000
+int main(){
+  int data[MAXDATA]; /*数据序列*/
+  int lgs[MAXDATA];  /*最长子序列长度*/
+  int n,temp,k; /*n 序列长度 temp 子序列长度中间变量 */
+  scanf("%d",&n);
+  if(n>10000){
+     return 0;      
+  }
+  for(int i=0;i<n;i++){
+    scanf("%d",&data[i]);
+  }
+  for(int i=0;i<MAXDATA;i++){
+    lgs[i]=1;  /*给每一个序列点作为右端时的最大序列长度为1*/
+  }
+  for(int i=1;i<n;i++){
+    temp=1;
+    for(int j=0;j<i;j++){ /*与其前面的每一个进行比较*/
+      if(data[i]>data[j]){ /*如果数据比前面的某一个的值大*/
+        if(lgs[i]+lgs[j]>temp){ /*找出该点的最大子序列长度*/
+          temp=lgs[i]+lgs[j];
+        } 
+      }
+    }
+    lgs[i]=temp;
+  }
+  temp=lgs[0];
+  for(int i=1;i<n;i++){
+    if(lgs[i]>temp){
+      temp=lgs[i];
+    }
+  }
+  printf("%d",temp);
+  system("pause");
+}
