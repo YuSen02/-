@@ -1,0 +1,42 @@
+#include
+
+struct point
+{
+    double x,y;
+    point(double _x,double _y):
+        x(_x),y(_y){}
+};
+struct Line
+{
+    double x,y;
+    point a;
+    Line(double _x,double _y,point _a):
+        x(_x),y(_y),a(_a){}
+
+};
+
+int main()
+{
+    double x,y;
+    printf("输入线段两点\n");
+    scanf("%lf%lf",&x,&y);point a=point(x,y);
+    scanf("%lf%lf",&x,&y);point b=point(x,y);
+    printf("输入线段外一点\n");
+    scanf("%lf%lf",&x,&y);point c=point(x,y);
+
+    Line l=Line(a.x-b.x,a.y-b.y,a);
+    Line l1=Line(b.y-a.y,a.x-b.x,c);
+
+    //ansx=(a.x-b.x)*t+a.x;ansy=(a.y-b.y)*t+a.y
+
+    //(ansx-c.x)/(b.y-a.y)=(ansy-c.y)/(a.x-b.x)
+
+    double t=((a.y-c.y)*(b.y-a.y)-(a.x-c.x)*(a.x-b.x))/((a.x-b.x)*(a.x-b.x)-(a.y-b.y)*(b.y-a.y));
+    double ansx=(a.x-b.x)*t+a.x;
+    double ansy=(a.y-b.y)*t+a.y;
+
+    if(ansxb.x) puts("不存在");
+    else if(ansyb.y) puts("不存在");
+    else
+        printf("%lf %lf\n",ansx,ansy);
+}
