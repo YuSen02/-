@@ -1,0 +1,38 @@
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+const int N = 1005;
+bool road[N][N], used[N];
+int match[N], n, m, e;
+/*
+关于定义
+road[i][j] == 1表示左边集合中的i到右边集合中的j有边
+used[i] == 1是在每次做增广的时候记录已访问右集合的节点i
+match[i]记录右集合节点j的匹配对象
+n, m, e如题 （左集合大小，右集合大小， 边数）
+*/
+bool dfs(int x){
+     for(int i = 1; i <= m; ++i)
+         if(!used[i] && road[x][i]){                     //判断这条边是否可以走
+             used[i] = 1;                                     //记录这个节点已经被访问 防止成环
+             if(!match[i] || dfs(match[i])){            //如果这个点可以被让出来
+                 match[i] = x; return 1;                 //记录新的匹配点 返回true
+             }        
+         }    
+     return 0;                                                  //匹配失败
+}
+int main(){
+    scanf("%d%d%d", &n, &m, &e);
+    for(int i = 1, x, y; i <= e; ++i){
+        scanf("%d%d", &x, &y);
+        if(x <= n && y <= m) road[x][y] = 1;      //注意题目中说到有不合法的边  
+    }
+    int ans = 0;                                                //答案
+    for(int i = 1; i <= n; ++i){
+        for(int j = 1; j <= m; ++j) used[j] = 0;      //每次查询前都要清空used
+        if(dfs(i)) ++ans;                                      //如果这个点可以找到匹配点的话 答案加一
+    } 
+    printf("%d", ans);
+    return 0;
+}
