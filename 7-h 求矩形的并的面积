@@ -1,0 +1,20 @@
+#include <stdlib.h>
+#include <stdio.h>
+ 
+// 计算矩形面积
+int RecArea(int rec_length, int rec_width)
+{
+    int rec_area = 0;
+    rec_area = rec_length*rec_width;
+    return rec_area;
+}
+ 
+int main()
+{
+    int length, width, area;
+    printf("输入矩形的长和宽(用逗号分隔）：");
+    scanf("%d,%d", &length, &width);
+    area = RecArea(length, width);
+    printf("矩形面积为：%d\n", area);
+    return 0;
+}
