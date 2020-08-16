@@ -1,0 +1,62 @@
+求最长公共子序列
+
+1、问题描述：
+
+从一个给定的串中删去（不一定连续地删去）0个或0个以上的字符，剩下地字符按原来顺序组成的串。例如：“ ”，“a”，“xb”，“aaa”，“bbb”，“xabb”，“xaaabbb”都是串“xaaabbb”的子序列。（例子中的串不包含引号。）
+
+要求：给定两个序列 X={x1,x2,…,xm} 和 Y={y1,y2,…,yn}，找出X和Y的最长公共子序列。
+
+输入：输入数据有多组，每组有两行 ，每行为一个长度不超过500的字符串（输入全是大写英文字母（A,Z）），表示序列X和Y。
+
+输出：每组输出一行，表示所求得的最长公共子序列的长度，若不存在公共子序列，则输出0。
+
+样例输入：
+13456778
+357486782
+
+样例输出：
+5
+
+#include<stdio.h>
+#include<string.h>
+
+int max(int a,int b)
+{
+   return a>b?a:b;
+}
+int main()
+{
+    int i,j,k;
+    char a[600];
+    char b[600];
+    int f[600][600];
+    while(scanf("%s %s",a,b)!=EOF)
+    {
+        int n=strlen(a);
+        int m=strlen(b);
+        for(i=0;i<=n;i++)
+        {
+            f[i][0]=0;
+        }
+        for(i=0;i<=m;i++)
+        {
+            f[0][i]=0;
+        }
+        for(i=1;i<=n;i++)
+        {
+            for(j=1;j<=m;j++)
+            {
+                if(a[i-1]==b[j-1])
+                {
+                    f[i][j]=f[i-1][j-1]+1;
+                }
+                else
+                {
+                    f[i][j]=max(f[i-1][j],f[i][j-1]);
+                }
+            }
+        }
+        printf("%d\n",f[n][m]);
+    }
+    return 0;
+}
