@@ -1,0 +1,98 @@
+#include<stdio.h>
+#include<iostream>
+#include<string.h>
+#include<algorithm>
+#include<math.h>
+using namespace std;
+#define N 220
+
+int n, maps[N][N], vis[N], used[N];
+
+struct node
+{
+    int v,s;///v是纸牌的价值，s类型1:梅花  2:方块  3:黑桃  4:红桃；;;;;
+} a[N], b[N];
+
+void change(char s[], node &a)///传入地址才能改变它的值；
+{
+    if(s[0]<='9'&&s[0]>='2')a.v=s[0]-'0';
+    if(s[0]=='A')a.v=14;///A是最大的牌；；；；；
+    if(s[0]=='T')a.v=10;
+    if(s[0]=='J')a.v=11;
+    if(s[0]=='Q')a.v=12;
+    if(s[0]=='K')a.v=13;
+
+    if(s[1]=='H')a.s=4;
+    if(s[1]=='S')a.s=3;
+    if(s[1]=='D')a.s=2;
+    if(s[1]=='C')a.s=1;
+}
+bool Find(int u)
+{
+    for(int i=1; i<=n; i++)
+    {
+        if(!vis[i] && maps[u][i])
+        {
+            vis[i]=1;
+            if(!used[i] || Find(used[i]))
+            {
+                used[i]=u;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+int main()
+{
+    int T;
+    char s[11];
+    scanf("%d", &T);
+    while(T--)
+    {
+        memset(a, 0, sizeof(a));
+        memset(b, 0, sizeof(b));
+        memset(maps, 0, sizeof(maps));
+        memset(used, 0, sizeof(used));
+        scanf("%d", &n);
+        for(int i=1; i<=n; i++)
+        {
+            scanf("%s", s);
+            change(s, a[i]);
+        }
+        for(int i=1; i<=n; i++)
+        {
+            scanf("%s", s);
+            change(s, b[i]);
+            for(int j=1; j<=n; j++)///建立b和a的关系，当为1时说明第二个人的那张牌大一第一个人的那张牌；
+            {
+                if(b[i].v>a[j].v)
+                    maps[i][j] = 1;
+                if(b[i].v==a[j].v && b[i].s>a[j].s)
+                    maps[i][j] = 1;
+            }
+        }
+        for(int i=1;i<=n;i++)
+        for(int j=1;j<=n;j++)
+            if(maps[i][j])printf("maps[%d][%d]=1\n",i,j);
+        int ans=0;
+        for(int i=1; i<=n; i++)
+        {
+            memset(vis, 0, sizeof(vis));
+            if(Find(i))
+                ans++;;
+                for(int t=1;t<=n;t++)printf("%d ",used[t]);puts("");
+        }
+        printf("%d\n", ans);
+    }
+    return 0;
+}
+/*********/
+3
+5
+2H 3H 4H 5H 6H
+2H 3H 4H 5H 6H
+5
+2H 3H 4H 5H 6H
+6H 5H 4H 3H 2H
+/*********/
