@@ -1,0 +1,58 @@
+钢管切割
+实现解释：
+
+先设数组price[i]存储着i长度钢管切割后的最小值，p[i]存储着i长度钢管不切割的值，price数组既是本问题的dp数组。
+
+经过分析可知状态转移方程为：
+
+price[0] = 0;
+
+price[i] = min(p[1]+price[i-1],p[2]+price[i-2],...p[i-1]+price[1],p[i]);
+
+因为price[i]已经是当前情况下的最小值了，所以只需要遵循转移方程进行代码的完善即可。
+
+ 
+
+若要计算最大值只需在计算前设置最大值为负数（保证最小），然后在判断递归判断小于即可。
+
+ 
+
+坑点：
+
+初始化和状态转移方程的书写
+//钢管切割最小值 
+#include<iostream>
+using namespace std;
+int main()
+{
+    ios::sync_with_stdio(false);
+    int length,MIN;//分别为长度和最小值 
+    while(cin >> length)
+    {
+        int p[length+1];
+        for(int i = 1;i<=length;i++)
+            cin >> p[i];//依据题意，i长度的价值 
+        
+        int price[length+1];//保存每段价值
+        price[0] = 0;//会使用到price[0]，防止出错初始化 
+        
+        for(int i = 1;i<=length;i++)
+        {
+            MIN = 2147483647;//获得最小值时需要设为最大值 
+            for(int j = 1;j<=i;j++) 
+            {
+                if(MIN > p[j]+price[i-j])
+                //不断将i长度切割为前j部分和后i-j部分
+                //以找到i长度切割后的最小值 
+                {
+                    MIN = p[j] + price[i-j];//替换最小值 
+                    price[i] = MIN;
+                }
+                //状态转移方程介绍见实现解释 
+            }
+        }
+        cout << price[length] << '\n';
+        //输出最长部分（i）切割后的最小值
+    }
+    return 0;
+}
