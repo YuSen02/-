@@ -1,0 +1,79 @@
+多条流水线调度
+实现解释：
+
+相比两条线的其实只是需要多判断几次
+
+设a[i][j]存储着第i条线上第j个位置的花费，t[i][j]存储着第i条线到第j条线的调度费用，f[i][j]存储着i条线在j处的最小花费。
+
+则对每一个f[][i]应有如下的转移方程：
+
+第一个站台：f[i][1] = a[i][1];
+
+其余站台：f[i][j] = min(f[i][j-1]+t[i][i]+a[i][j],f[1][j-1]+t[1][i]+a[i][j],...,f[n][j-1]+t[n][i]+a[i][j]);
+
+注意站台间转移时需要考虑自己调度到自己的情况（视题意而定）
+
+min函数中前一个值表示直接在当前这条线的前一个结点前进的花费，后面则表示从其他线的前一个结点先转移过来后再前进的花费，一次比较后便可得出到达当前线该位置的最小花费。
+
+最后比较到达n处（最后一个站台）哪条线的时间花费最小即可。
+
+ 
+
+坑点：
+
+注意按照题意判断是否要考虑自身的调度t[i][i]即可
+#include<iostream>
+#include<cstring>
+#include<algorithm>
+using namespace std;
+int main()
+{
+    ios::sync_with_stdio(false);
+    int num,n;
+    int fend;
+    int i,j;
+    int tempf;
+    while(cin >> num >> n)//分别为线路个数和站台个数 
+    {
+        int a[num][n+1],t[num][num];
+        for(i = 0;i<num;i++)
+            for(j = 1;j<=n;j++)
+                cin >> a[i][j];//i条线j站台的花费 
+        
+        for(i = 0;i<num;i++)
+            for(j = 0;j<num;j++)
+                cin >> t[i][j];//i条线到j条线的调度费用 
+
+        int f[num][n+1];//一维为当前线路，二维为站台位置 
+        for(i = 0;i<num;i++)
+        {
+            f[i][1] = a[i][1];//每条线第一个站台的最小花费就是第一个 
+        }
+        for(i = 2;i<=n;i++)
+        {
+            for(j = 0;j<num;j++)
+            {
+                tempf = 2147483647;//为了找到最小值先设定最大的 
+                for(int k = 0;k<num;k++)
+                {//循环判断所有条道路的情况 
+                    if(tempf > f[k][i-1]+t[k][j]+a[j][i])
+                    {
+                        tempf = f[k][i-1]+t[k][j]+a[j][i];
+                    }
+                }
+                f[j][i] = tempf;//存储j条线在i站台的最小值 
+            }
+        }
+        tempf = f[0][n];
+        for(i = 1;i<num;i++)
+        {
+            if(tempf > f[i][n])
+            {
+                tempf = f[i][n];
+            }
+        }
+        fend = tempf;//得到最大值 
+        cout << fend << '\n';
+    }
+    return 0;
+}
