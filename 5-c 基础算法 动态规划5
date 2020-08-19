@@ -1,0 +1,85 @@
+矩阵链乘
+实现解释：
+
+数据介绍：m[0]存储第一个矩阵的行数，m[i]存储第i个矩阵的列数和第i+1个矩阵的行数
+
+num[i][j]记录第i个矩阵和第j个矩阵之间的最小计算次数
+
+cut仅是记录切割位置所用cut[i][j]表示第ij个矩阵之间的最优切割位置
+
+则按照矩阵乘法的知识，两个矩阵相乘的计算次数便可直接由以下的状态转移方程得到：
+
+i=j时num[i][j] = 0
+
+i<j时num[i][j] = min(num[i][k]+num[k+1][j]+m[i-1]*m[k]*m[j])（k为[i,j)间的值，即表示以第i个矩阵到j-1个矩阵之间第k个矩阵作为分割处）
+
+解释：i=j自然不用计算，第二个既是当k作为分割点时总次数等于i到k个矩阵的相乘最小次数+第k+1个矩阵到第j个矩阵的相乘最小次数+合并时的产生的新次数（最左行数*分割点列数*最右行数）
+
+然后便是正常的翻译了。
+
+其中对于分割方案的输出，只需按照矩阵范围依据cut数组获取切割点输出即可，具体可参考代码。
+#include<iostream>
+using namespace std;
+int length;
+int cut[2000][2000];
+int count;
+void printCut(int i,int j)
+{
+    if(i == j)
+        cout << 'A' << i;
+    else
+    {
+        cout << '(';
+        printCut(i,cut[i][j]);
+        printCut(cut[i][j]+1,j);
+        count++;
+        cout << ')';
+    }
+}
+int main()
+{
+    ios::sync_with_stdio(false);
+    int n;
+    cin >> n;
+    length = n;
+    int m[n+1];
+    for(int i = 0;i<=n;i++)
+        cin >> m[i];
+    
+    int num[n+1][n+1];//对应矩阵个数即可
+    for(int i = 1;i<=n;i++)
+        num[i][i] = 0;
+    
+    int temp;
+    count = 0;
+    for(int l = 2;l<=n;l++)
+    //l为1的情况不必讨论，因为就是矩阵自己，所以从2到n依次进行 
+    { 
+        for(int i = 1;i<=n-l+1;i++)
+        //从第一个矩阵一直到最后一个可到达的矩阵
+        //这样i表示的既是连续l个矩阵的第一个矩阵
+        //根据输入，第i个矩阵的行数：i-1的值，列数：i的值 
+        {
+            int j = i+l-1;//当前l个矩阵的最后一个矩阵下标 
+            num[i][j] = 2147483647;//用于比较 
+            for(int k = i;k<=j-1;k++)
+            //k是节点，代表第k和k+1个矩阵之间的那个下标
+            //所以需要到达j-1，也就是第j个矩阵前的那个位置才算结束 
+            //由位置可知k的值为第k个矩阵的列数即划分开时需要乘的值 
+            {
+                temp = num[i][k]+num[k+1][j]+m[i-1]*m[k]*m[j];
+                //当前划分状态的计算次数，两个num分别为两侧矩阵链的次数，最后一项为合并后的新增次数 
+                if(num[i][j]>temp)
+                {
+                    num[i][j] = temp;
+                    cut[i][j] = k;
+                }
+            }
+        }
+    }
+    printCut(1,n);
+    cout << '\n'; 
+    cout << count << '\n';//切割次数 
+    cout << num[1][n] << '\n';//计算次数 
+    return 0;
+}
