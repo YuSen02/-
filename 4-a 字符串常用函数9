@@ -1,0 +1,24 @@
+strtok
+
+1、原型：char *strtok(char *str, char const *sep);
+
+2、功能：分解字符串str为一组字符串，分隔符为sep。
+
+3、注意：如果strtok函数的第1个参数不是NULL，函数将找到字符串的第1个标记。strtok同时将保存它在字符串中的位置。如果strtok函数的第1个参数是NULL，函数就在同一个字符串中从这个被保存的位置开始像前面一样查找下一个标记。如果字符串内不存在更多的标记，strtok函数就返回一个NULL指针。在典型情况下，在第1次调用strtok时，向它传递一个指向字符串的指针。然后，这个函数被重复调用（第1个参数为NULL），直到它返回NULL为止。
+
+4、举例：
+
+#include <stdio.h>
+#include <string.h>
+
+int main()
+{
+    char whitespace[] = " ";
+    char *token;
+    char line[] = "I love you";
+    for (token = strtok(line, whitespace); token !=NULL;
+         token = strtok(NULL, whitespace)) {
+             printf("Next token is |%s|\n", token);
+        }
+    return 0;
+}
