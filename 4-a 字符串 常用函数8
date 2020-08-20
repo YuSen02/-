@@ -1,0 +1,24 @@
+strstr
+
+1、原型：char *strstr(char *s1, char *s2);
+
+2、功能：这个函数在s1中查找整个s2第1次出现的起始位置，并返回一个指向该位置的指针。如果s2并没有完整地出现在s1的任何地方，函数将返回一个NULL指针。如果第2个参数是一个空字符串，函数就返回s1。
+
+3、举例：
+
+#include <stdio.h>
+#include <string.h>
+
+int main()
+{
+    char s1[20] = "Hello there, honey.";
+    char s2[] = "honey";
+    char *s3 = "";
+    char *ans;
+    ans = strstr(s1, s2);
+    printf("ans:|%s|\n", ans);
+
+    ans = strstr(s1, s3);
+    printf("ans:|%s|\n", ans);
+    return 0;
+}
