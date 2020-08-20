@@ -1,0 +1,22 @@
+strrchr
+与strchr类似的查找函数还有一个是strrchr，它和strchr的不同之处在于，该函数返回的是一个指向字符串中该字符最后一次出现的位置
+
+char* my_strrchr(const char* str, int ch)
+{
+  char* pos = 0;
+  assert(str);
+  while (*str)
+  {
+    if (*str == ch)
+    {
+      pos = str;
+    }
+    str++;
+  }
+  if (pos != 0)
+  {
+    return pos;
+  }
+  else
+    return NULL;
+}
