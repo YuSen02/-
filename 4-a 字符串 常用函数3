@@ -1,0 +1,17 @@
+strcat
+strcat函数是可以把一个字符串添加(连接)到另一个字符串的后面。strcat函数要求dest参数原先已经包含了一个字符串(可以是空字符串)。它找到这个字符串的末尾，并把src字符串的一份拷贝添加到这个位置。
+char *my_strcat(char *dest, const char *src)
+{
+  char *ret = dest;
+  assert(dest);
+  assert(src);
+  while (*dest != '\0')
+  {
+    dest++;
+  }
+  while (*dest++ = *src++)
+  {
+    ;
+  }
+  return ret;
+}
