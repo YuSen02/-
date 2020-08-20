@@ -1,0 +1,20 @@
+strcpy
+用于复制字符串的函数是strcpy，它的原型如下：
+
+1
+char *strcpy(char *dest, const char *src);
+使用这个函数时，要注意几点
+(1)、目标字符数组的空间必须足够大，足以容纳需要复制的字符串
+(2)、目标字符数组要可以被修改
+(3)、被复制的字符串要可以找到'\0'
+char *my_strcpy(char *dest, const char *src)
+{
+  char *tmp = dest;
+  assert(dest);
+  assert(src);
+  while (*dest++ = *src++)
+  {
+    ;
+  }
+  return tmp;
+}
