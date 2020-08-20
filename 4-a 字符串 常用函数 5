@@ -1,0 +1,26 @@
+strstr
+为了在一个字符串中查找一个子串，可以使用strstr函数，该函数实在s1中查找整个s2第1次出现的起始位置，并返回一个指向该位置的指针。如果s2并没有出现在s1的任何地方，函数将返回一个NULL指针。如果第二个函数是一个空字符串，函数就返回s1。
+char *my_strstr(const char* s1, const char* s2)
+{
+  const char *p = s1;
+  const char *q = s2;
+  const char *cur = NULL;
+  assert(s1);
+  assert(s2);
+  if (*s2 == '\0')
+    return s1;
+  while (*p)
+  {
+    cur = p;
+    while ((*p) && (*q) && (*p == *q))
+    {
+      p++;
+      q++;
+    }
+    if (*q == '\0')
+      return cur;
+    p = cur + 1;
+    q = s2;
+  }
+  return NULL;
+}
