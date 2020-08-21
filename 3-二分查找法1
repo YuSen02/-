@@ -1,0 +1,25 @@
+二分查找法(BinarySort)
+前提：在已排序的数组中进行查找
+特点：从中间开始对数组进行查找，如果N小于中间数，则对左半部分进行查找，如果N大于中间数，则对右半部分进行查找直到找到元素
+
+int n = (int) (Math.random() * 20 + 1);     // 1-100的随机数
+        boolean b = false;
+        int[] arr = new int[]{1,7,2,5,4,8,6,9,10,3};
+        Arrays.sort(arr);   // 先对数组进行排序
+        int first = 0,last = arr.length - 1,mid = arr.length / 2;
+        while(first <= last){
+            if(n == arr[mid]){
+                b = true;
+                break;
+            }else if(n > arr[mid]){
+                first = mid + 1;
+            }else if(n < arr[mid]){
+                last = mid - 1; 
+            }
+            mid = (first + last) / 2; 
+        }
+        if(b){
+            System.out.print("查找成功！\n数组的下标为: " + mid );
+        }else{
+            System.out.print("查找失败！");
+        }
