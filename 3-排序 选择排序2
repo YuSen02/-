@@ -1,0 +1,77 @@
+摘要：选择排序在C语言中也有着广泛的应用，笔者在学习别人单片机代码的过程中经常看到许多经验丰富的老程序员
+
+采用选择排序，因此，笔者也记录下来了选择排序。
+
+目录
+
+　　1.选择排序思想
+
+　　2.选择排序示意图
+
+　　3.算法时间复杂度和稳定性
+
+　　4.示例代码
+
+　　5.vs2015运行示意图
+
+一、选择排序思想
+
+　　选择排序是一种直观的排序思想，简单来说，就是从未排序的数列中找出最小的元素，放在起始地址，接下来在从剩下未排序的数列中选择次小的元素放在第二位置，
+
+接下来，以此类推。
+
+#include <string>
+#include<iostream>
+
+#define SWAP(X,Y) X=X+Y;Y=X-Y;X=X-Y
+
+#define ARRSIZE(arr)   (sizeof(arr)/sizeof(arr[0]))
+
+using namespace std;
+
+void selsort(int a[],int len); //选择排序
+void print(int a[], int len);
+
+
+int main(int argc, char *argv) {
+
+    int a[] = { 526,36,2,369,56,45,78,92,125,52 };
+    int length = ARRSIZE(a);
+    printf("before sort:\n");
+    print(a, length);
+    selsort(a, length);
+    printf("after sort:\n");
+    print(a, length);
+    return 0;
+
+
+}
+/*
+**实现数据从小到大的排列
+*/
+void selsort(int a[], int len) {
+    int min;
+    for (int i = 0; i < len - 1; i++) {
+
+        min = i;
+        for (int j = i + 1; j < len ; j++) {
+
+            if (a[j] < a[min]) {
+                min = j;
+            }
+        }
+
+        if (min != i) {
+            SWAP(a[i], a[min]);
+        }
+    }
+
+}
+
+
+void print(int a[], int len) {
+    for (int i = 0; i < len; i++) {
+        printf("a[%d]=%d ", i, a[i]);
+    }
+    printf("\n");
+}
