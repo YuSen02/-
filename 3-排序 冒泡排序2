@@ -1,0 +1,16 @@
+冒泡排序：时间复杂度 O（n2），相同元素的前后顺序不会改变，冒泡排序是一种稳定排序算法。
+
+代码实现：
+
+public static void bubbleSort(int []arr) {
+        // int[] arr = {12,23,34,56,56,56,78}; // demo 数据
+        for(int i =0;i<arr.length-1;i++) { 
+            for(int j=0;j<arr.length-i-1;j++) {//-1为了防止溢出
+                if(arr[j]>arr[j+1]) {
+                    int temp = arr[j];
+                    arr[j]=arr[j+1];
+                    arr[j+1]=temp;
+                }
+            }    
+        }
+    }
