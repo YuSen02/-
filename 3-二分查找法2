@@ -1,0 +1,70 @@
+：在这里需要注意的是---1.二分查找需要查找的序列已经有序 2.在找到元素之后要跳出查找的循环。
+/**
+二分查找：加强理解记忆
+*/
+ 
+#include <stdio.h>
+ 
+#define N 7
+ 
+/*找到即返回元素在数组中的物理位置，找不到则返回-1*/
+int BinarySearch(int* arr,int n,int se)
+{
+	int low=0,high=n-1;
+	int mid=0,pos=-1;
+	while (low<=high)
+	{
+		mid=(low+high)/2;
+		if (se>arr[mid])
+		{
+			low=mid+1;
+		}
+		else if (se<arr[mid])
+		{
+			high=mid-1;
+		}
+		else
+		{
+			//return mid;
+			pos=mid;
+			break;
+			//差点忘记break掉;  ---或者此处直接return回去:return pos也可以---只是觉得这样子写不规范
+		}
+	}
+	if (pos!=-1)
+	{
+		return pos;
+	}
+	else
+	{
+		return -1;
+	}
+	
+}
+ 
+int main()
+{
+	int arr[N]={0,1,2,4,5,6,8};
+	printf("数组中的元素: ");
+	for (int i=0;i<N;i++)
+	{
+		printf("%d ",arr[i]);
+	}
+	printf("\n");
+ 
+	int val=8;
+	//int val=-9;
+ 
+	//printf("%d",BinarySearch(arr,N,val));
+	int pos=BinarySearch(arr,N,val);
+	if (pos != -1)
+	{
+		printf("元素%d是数组中第%d元素\n",val,pos+1);
+	}
+	else
+	{
+		printf("元素%d不存在与该数组中\n",val);
+	}
+ 
+	return 0;
+}
