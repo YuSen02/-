@@ -1,0 +1,84 @@
+/**
+冒泡排序：加强对其的理解
+*/
+ 
+#include <STDIO.H>
+ 
+#define N 7
+ 
+//传统的冒泡排序
+void BubbleSortOne(int* arr,int n,int& count)
+{
+	int temp;
+	for (int j=0;j<n-1;j++)
+	{
+		for (int i=0;i<n-j-1;i++)
+		{
+			if (arr[i]>arr[i+1])
+			{
+				temp=arr[i];
+				arr[i]=arr[i+1];
+				arr[i+1]=temp;
+ 
+				count += 1;
+			}
+		}
+	}
+ 
+}
+ 
+//加上change标志的冒泡排序
+void BubbleSortTwo(int* arr,int n,int& count)
+{
+	bool change=true;
+	int temp;
+	for (int j=0;j<n-1&&change;j++)
+	{
+		change=false;
+		for (int i=0;i<n-j-1;i++)
+		{
+			if (arr[i]>arr[i+1])
+			{
+				temp=arr[i];
+				arr[i]=arr[i+1];
+				arr[i+1]=temp;
+ 
+				change=true;
+ 
+				count += 1;
+			}
+		}
+	
+	}
+}
+ 
+ 
+int main()
+{
+	//int R[N]={2,4,1,0,0,2,5};
+	int R[N]={1,0,2,0,7,3,5};
+	printf("原先数组的元素: ");
+	for (int i=0;i<N;i++)
+	{
+		printf("%d ",R[i]);
+	}
+	printf("\n");
+ 
+	int count=0;
+ 
+	BubbleSortOne(R,N,count);
+ 
+	//BubbleSortTwo(R,N,count);
+ 
+ 
+	printf("交换的次数: %d\n",count);
+ 
+	printf("冒泡排序之后数组的元素: ");
+	for (int j=0;j<N;j++)
+	{
+		printf("%d ",R[j]);
+	}
+	printf("\n");
+ 
+	return 0;
+}
