@@ -1,0 +1,62 @@
+
+ 
+/**
+直接插入排序:加强理解记忆
+*/
+ 
+#include <stdio.h>
+ 
+#define N 7
+ 
+void DInsertSort(int* arr,int n)
+{
+	int i,temp,pos,k;
+	//从第二个元素开始
+	for (i=1;i<n;i++)
+	{
+		temp=arr[i];
+		pos=i;
+		k=i-1;
+		while (k>=0 && temp<arr[k])
+		{
+			k -= 1;
+		}
+		//终于跳出while循环----有两种情况：k<0  或者  temp>=arr[k]   不管哪种情况，以下都适合
+		k += 1;
+		//往后搬迁元素
+		while (pos>k)
+		{
+			arr[pos] = arr[pos-1];
+			pos -= 1;
+		}
+		//搬迁完毕，回填元素
+		arr[pos]=temp;
+ 
+	}
+}
+ 
+ 
+int main()
+{
+	//int R[N]={0,2,3,1,5,7,0};
+	int R[N]={-1,-3,-5,-9,0,1,0};
+	printf("数组原先的元素: ");
+	for (int i=0;i<N;i++)
+	{
+		printf("%d ",R[i]);
+	}
+	printf("\n");
+ 
+	
+	DInsertSort(R,N);
+ 
+ 
+	printf("直接插入排序后数组的元素: ");
+	for (int j=0;j<N;j++)
+	{
+		printf("%d ",R[j]);
+	}
+	printf("\n");
+ 
+	return 0;
+}
