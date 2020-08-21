@@ -1,0 +1,13 @@
+插入排序(InsertSort)
+特点：将后面的数与前面的数比较大小并转换值；
+
+int[] arr = new int[]{1,7,2,5,4,8,6,9,10,3};
+    for(int i = 1;  i < arr.length - 1; i++){  
+        for(int j = 0; j < i; j++ ){
+            if(arr[i] < arr[j]){
+                int temp = arr[j];
+                arr[j] = arr[i];
+                arr[i] = temp;
+            }
+        }
+    }
