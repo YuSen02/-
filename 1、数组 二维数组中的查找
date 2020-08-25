@@ -1,0 +1,62 @@
+题目：在一个 n * m 的二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数，输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。
+
+ 
+
+示例:
+
+现有矩阵 matrix 如下：
+
+[
+  [1,   4,  7, 11, 15],
+  [2,   5,  8, 12, 19],
+  [3,   6,  9, 16, 22],
+  [10, 13, 14, 17, 24],
+  [18, 21, 23, 26, 30]
+]
+给定 target = 5，返回 true。
+
+给定 target = 20，返回 false。
+
+解题思路
+利用二分查找的思路：选择一个元素，可以把矩阵分成左上、右上、左下和右下四块。如果元素不是要找的目标，可以用排除法排除掉一部分，再递归搜索剩下的部分。
+
+我们暂叫他四分查找（quaternary search），复杂度约为\log{m}\log{n}logmlogn
+
+这个元素有两种取法：
+
+解法一：二维中点
+取(m/2, n/2)，如果该点小于目标，则排除掉左上角；如果该点大于目标，则排除掉右下角。
+
+剩下的三块也可以合并一下看作两块。
+
+
+bool qsearch_2d(int** matrix, int rows, int left, int right, int target) {
+    if(left == right) {
+        return false;
+    }
+    while(rows > 0) {
+        int mid_i = rows >> 1;
+        int step = (right - left) >> 1;
+        int mid_j = left + step;
+
+        if(matrix[mid_i][mid_j] == target) {
+            return true;
+        } else if(matrix[mid_i][mid_j] < target) {
+            // 右上
+            if(qsearch_2d(matrix, mid_i + 1, mid_j + 1, right, target)) {
+                return true;
+            }
+            // 左下右下合并
+            matrix += ++mid_i;
+            rows -= mid_i;
+        } else {
+            // 左下
+            if(qsearch_2d(matrix + mid_i, rows - mid_i, 0, mid_j, target)) {
+                return true;
+            }
+            // 左上右上合并
+            rows = mid_i;
+        }
+    }
+    return false;
+}
