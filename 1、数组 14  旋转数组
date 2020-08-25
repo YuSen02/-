@@ -1,0 +1,90 @@
+题目：给定一个数组，将数组中的元素向右移动 k 个位置，其中 k 是非负数。
+
+示例 1:
+
+输入: [1,2,3,4,5,6,7] 和 k = 3
+输出: [5,6,7,1,2,3,4]
+解释:
+向右旋转 1 步: [7,1,2,3,4,5,6]
+向右旋转 2 步: [6,7,1,2,3,4,5]
+向右旋转 3 步: [5,6,7,1,2,3,4]
+示例 2:
+
+输入: [-1,-100,3,99] 和 k = 2
+输出: [3,99,-1,-100]
+解释: 
+向右旋转 1 步: [99,-1,-100,3]
+向右旋转 2 步: [3,99,-1,-100]
+说明:
+
+尽可能想出更多的解决方案，至少有三种不同的方法可以解决这个问题。
+要求使用空间复杂度为 O(1) 的 原地 算法。
+
+解题思路
+1、使用额外的数组（但不满足空间复杂度O(1)条件）：
+1）将右移动后即将溢出的K个内容拷贝至新的临时数组
+2）右移动原数组
+3）将临时数组的内容拷贝至原数组的首部
+
+2、满足条件最简单的方法是依次旋转，每次将数组整体旋转1位，共旋转k次
+
+3、使用反转数组的方法，例如k为3时（次优，但是好理解）：
+原始数组 : 1 2 3 4 5 6 7
+反转所有数字后 : 7 6 5 4 3 2 1
+反转前 k 个数字后 : 5 6 7 4 3 2 1
+反转后 n-k 个数字后 : 5 6 7 1 2 3 4 --> 结果
+
+4、使用跳跃替换（最优但是不好理解）
+1）计算出每个元素最终所在的位置，比如k=3, nums[0]替换掉nums[3]，再从3开始，计算下一个要替换的位置。
+这步需要注意的是，不是把nums[0]和nums[3]直接交换，而是nums[3]先存起来用于下次替换，nums[0]替换nums[3]，
+2）总共需要跳跃着替换numsSize次
+3）如果发现跳回了原地，需要从下一个位置再次开始跳跃。
+
+代码
+使用反转数组的方法（不容易错，性能也行，建议面试写这种）
+
+
+void reverse(int *nums, int start, int end) {
+    int temp;
+    while (start < end) {
+        temp = nums[start];
+        nums[start] = nums[end];
+        nums[end] = temp;
+        start++;
+        end--;
+    }
+}
+
+void rotate(int *nums, int numsSize, int k) {
+    k %= numsSize; //计算出nums[0]移动后的最后位置，即(0+k)%numSize
+    reverse(nums, 0, numsSize - 1);
+    reverse(nums, 0, k - 1);
+    reverse(nums, k, numsSize - 1);
+}
+使用跳跃替换
+
+
+void rotate2(int *nums, int numsSize, int k) {
+    k = k % numsSize;
+    int count = 0;
+    int start = 0;
+    int current, prev;
+    int next, temp;
+
+    while (count < numsSize) { //控制跳跃次数
+        current = start;
+        prev = nums[start];
+        do {
+            next = (current + k) % numsSize;
+
+            temp = nums[next];
+            nums[next] = prev;
+            prev = temp;
+
+            current = next;
+            count++;
+        } while (start != current);
+        //跳回远点，但还未达到跳远次数，从下一个数开始
+        start++;
+    }
+}
